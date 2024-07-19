@@ -18,21 +18,22 @@ h1 {
 }
 
 body {
-  color: #fff;
+  color: #C8DDF3;
   font-family: 'Khula', sans-serif;
   height: 100vh;
   overflow: hidden;
   margin: 0;
   text-align: center;
+  background-color: #485563;
 }
 
 a {
-  color: #fff;
+  color: #16D9E3;
   text-decoration: none;
 }
 
 a:hover {
-  color: #16D9E3;
+  color: #00f2ff;
 }
 
 .start {
@@ -55,8 +56,7 @@ h1 {
   height: 100vh;
   width: 100vw;
   transition: margin 0.5s ease-out;
-  background-color: #46AEF7;
-  /* background: linear-gradient(90deg, #29323C 0%, #485563 100%); */
+  background: linear-gradient(90deg, #29323C 0%, #485563 100%);
 }
 
 .screen.up {
@@ -77,8 +77,8 @@ h1 {
 
 .time-btn {
   background-color: transparent;
-  border: 2px solid white;
-  color: #fff;
+  border: 2px solid #16D9E3;
+  color: #16D9E3;
   cursor: pointer;
   font-family: inherit;
   padding: .5rem 1rem;
@@ -106,20 +106,12 @@ h1 {
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 95%;
+  width: 99%;
   height: 95%;
 
-  /* background: linear-gradient(118.38deg, #29323C -4.6%, #485563 200.44%); */
-  /* box-shadow: -8px -8px 20px #2A333D, 10px 7px 20px #475462; */
+  
   border: 1px solid white;
   border-radius: 30px;
   overflow: hidden;
 }
 
-.circle {
-  background: red;
-  /* background: linear-gradient(90deg, #16D9E3 0%, #30C7EC 47%, #46AEF7 100%); */
-  position: absolute;
-  border-radius: 50%;
-  cursor: pointer;
-}

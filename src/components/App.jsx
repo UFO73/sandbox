@@ -12,6 +12,12 @@ import image10 from '../svg/ img10.png';
 import image11 from '../svg/ img11.png';
 import image12 from '../svg/ img12.png';
 import image13 from '../svg/ img13.png';
+import image14 from '../svg/ img14.png';
+import image15 from '../svg/ img15.png';
+import image16 from '../svg/ img16.png';
+import image17 from '../svg/ img17.png';
+import image18 from '../svg/ img18.png';
+import bomba from '../svg/img19.png';
 
 import { nanoid } from 'nanoid';
 
@@ -36,6 +42,12 @@ const App = () => {
     image11,
     image12,
     image13,
+    image14,
+    image15,
+    image16,
+    image17,
+    image18,
+    bomba,
   ];
 
   useEffect(() => {
@@ -44,11 +56,32 @@ const App = () => {
     }
   }, [time]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImages(prevImages => {
+        const now = Date.now();
+        const updatedImages = prevImages.filter(image => {
+          if (image.imageUrl === bomba) {
+            if (now - image.createdAt > 3000) {
+              addNewImages(1);
+              return false;
+            }
+          }
+          return true;
+        });
+        return updatedImages;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [images]);
+
   const startGame = () => {
-    setScore(0); // Reset score when starting a new game
+    setScore(0);
+    setTime(30);
     setTimer(setInterval(decreaseTime, 1000));
-    createRandomImage();
-    setTimeState(time);
+    createInitialImages(4);
+    setTimeState(30);
   };
 
   const decreaseTime = () => {
@@ -66,21 +99,33 @@ const App = () => {
 
   const finishGame = () => {
     clearInterval(timer);
-    setScreen(2); // Set the screen to 2 to show the final score
+    setScreen(2);
   };
 
   const createRandomImage = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const size = getRandomNumber(100, 250);
+    const size = getRandomNumber(60, 200);
     const x = getRandomNumber(0, width - size);
     const y = getRandomNumber(0, height - size);
     const imageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
     setImages(prevImages => [
       ...prevImages,
-      { imageUrl, size, x, y, id: nanoid() },
+      { imageUrl, size, x, y, id: nanoid(), createdAt: Date.now() },
     ]);
+  };
+
+  const createInitialImages = count => {
+    for (let i = 0; i < count; i++) {
+      createRandomImage();
+    }
+  };
+
+  const addNewImages = count => {
+    for (let i = 0; i < count; i++) {
+      createRandomImage();
+    }
   };
 
   const getRandomNumber = (min, max) => {
@@ -94,17 +139,24 @@ const App = () => {
   };
 
   const handleImageClick = id => {
-    setScore(prevScore => prevScore + 1);
+    const clickedImage = images.find(image => image.id === id);
+
+    if (clickedImage.imageUrl === bomba) {
+      setScore(prevScore => prevScore - 10);
+    } else {
+      setScore(prevScore => prevScore + 1);
+    }
     setImages(prevImages => prevImages.filter(image => image.id !== id));
-    createRandomImage();
+    addNewImages(1);
   };
 
-  const handleRstart = () => {
+  const handleRestart = () => {
+    clearInterval(timer);
     setScreen(0);
     setScore(0);
     setTime(30);
-    setTimer(null);
     setImages([]);
+    setTimer(null);
   };
 
   return (
@@ -120,7 +172,8 @@ const App = () => {
       {screen === 1 && (
         <div className="screen">
           <h3>
-            left <span id="time">00:30</span>
+            left <span id="time">00:30</span> Score{' '}
+            <span id="score">{score}</span>
           </h3>
           <div className="board" id="board">
             {images.map(image => (
@@ -145,9 +198,9 @@ const App = () => {
       {screen === 2 && (
         <div className="screen">
           <h1>
-            Score: <span className="primary">{score}</span>
+            Бодін Дон Coin: <span className="primary">{score}</span> 💸💸💸
           </h1>
-          <a href="#" className="start" id="start" onClick={handleRstart}>
+          <a href="#" className="start" id="start" onClick={handleRestart}>
             RESTART
           </a>
         </div>
